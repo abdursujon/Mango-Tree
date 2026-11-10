@@ -1,79 +1,89 @@
 # Mango-Tree
-Mango-Tree is a command line interface (CLI) which also consists of an application programming interface (API). Anyone can use this tool as a task logger instead of having to install a UI interface. 
+Mango-Tree is a CLI task manager for developers who live in the terminal. Add, track and finish your tasks without leaving the command line, with no GUI to install.
 
+# User Guide 
+## Requirements
+- Python 3.10 or newer
+- git
+- pipx (`pip install pipx` or `sudo apt install pipx`)
 
-# Installing Pytest 
-
+## Install
 ```bash
+pipx install git+https://github.com/abdursujon/Mango-Tree.git@v0.0.1
+```
+
+## Commands
+```bash
+mango-tree add "water the plants"           # add a task
+mango-tree add "water the plants" -o sujon  # add a task with an owner
+mango-tree                                  # list all tasks
+mango-tree list -o sujon                    # list tasks by owner
+mango-tree list -s done                     # list tasks by state (todo, in prog, done)
+mango-tree start 1                          # set task 1 to in prog
+mango-tree finish 1                         # set task 1 to done
+mango-tree update 1 -o ali                  # change the owner of task 1
+mango-tree update 1 -s "water the garden"   # change the summary of task 1
+mango-tree delete 1                         # delete task 1
+mango-tree count                            # number of tasks
+mango-tree config                           # path to the database
+mango-tree version                          # app version
+mango-tree --help                           # show all commands
+```
+
+Tasks are saved in `~/mango_tree_db`. To store them somewhere else, set `MANGO_TREE_DB_DIR`:
+```bash
+export MANGO_TREE_DB_DIR=~/your_directory_name
+```
+For example, to store tasks in ~/Documents/tasks:
+```bash
+export MANGO_TREE_DB_DIR=~/Documents/tasks
+```
+Add above line to `~/.bashrc` (or `~/.zshrc`) to keep it permanently.
+
+# Developer Guide
+## Setup
+```bash
+git clone https://github.com/abdursujon/Mango-Tree.git
+cd Mango-Tree
 python3 -m venv .venv
-source .venv/bin/activate 
-pip install pytest 
+source .venv/bin/activate
+pip install -e .
+pip install pytest
 ```
-- Running a test 
+`pip install -e .` installs Typer and Rich, and links the `mango-tree` command to your local code, so changes take effect without reinstalling.
+
+## Run the app
 ```bash
-cd directory_name 
-pytest test_one.py
+mango-tree
 ```
-- Getting extra information about test failure 
+
+## Run the tests
 ```bash
-cd directory_name 
-pytest -v test_one.py 
-pytest -vv test_one.py
+pytest tests/mango_tree_tests
 ```
-- Turn off traceback 
+
+## Use a test database while developing
+Point the app at a throwaway folder so your real tasks are not touched. This only lasts for the current terminal.
 ```bash
-cd directory_name 
-pytest --tb=no test_one.py
+export MANGO_TREE_DB_DIR=/tmp/mango_tree_test
+mango-tree add "test task"
+mango-tree
 ```
-
-- Run multiple test script at the same time 
+Switch back to the real database:
 ```bash
-pytest --tb=no
+unset MANGO_TREE_DB_DIR
+```
+In pytest, give each test its own empty database:
+```python
+monkeypatch.setenv("MANGO_TREE_DB_DIR", str(tmp_path))
 ```
 
-- Stop python creating pytest_cache
-```bash
-PYTHONDONTWRITEBYTECODE=1
+## Project structure
 ```
-
-# Topics to Cover
-
-1. Assertions
-2. Exceptions
-3. Fixtures
-4. Builtin fixtures
-5. Parametrize
-6. Markers
-7. Test strategy
-8. Configuration files
-9. Coverage
-10. Mocking
-11. tox and CI
-12. Testing scripts
-13. Debugging
-14. Plugins
-15. Building plugins
-16. Advanced parametrize
-
-# SQLite CRUD Topics
-
-1. Connect and close
-2. Create table
-3. Insert
-4. Select one
-5. Select all
-6. Update
-7. Delete one
-8. Delete all
-9. Count
-10. Placeholders
-11. Commit and rollback
-12. Row factory
-13. Context manager
-14. Testing with tmp_path
-
-
-## Install typer to turn python functions into terminal command 
-```bash 
-pip install typer 
+src/mango_tree/
+    db.py     # SQLite storage, the only file with SQL
+    api.py    # MangoTree dataclass, exceptions and MangoTreeService logic
+    cli.py    # Typer commands that call the API
+tests/
+    mango_tree_tests/
 ```

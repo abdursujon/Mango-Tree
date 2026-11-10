@@ -19,10 +19,10 @@ class MangoTreeDB:
             self._connection.execute(
                 """
                 CREATE TABLE IF NOT EXISTS mango_tree(
-                    id INTEGER PRIMARY KEY AUTOINCREMENT 
-                    summary TEXT 
-                    owner TEXT 
-                    state TEXT 
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    summary TEXT,
+                    owner TEXT,
+                    state TEXT
                 )
                 """
             )

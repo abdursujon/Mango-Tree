@@ -7,7 +7,7 @@ import os
 import pathlib
 from rich.table import Table
 from io import StringIO
-
+import rich 
 
 def get_path():
     db_path_env = os.getenv("MANGO_TREE_DB_DIR", "")

@@ -4,13 +4,11 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mango-tree"
-version = "0.0.1"
+version = "v0.0.1"
 description = "A command line task logger"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = ["typer"]
+dependencies = ["typer", "rich"]
 
 [project.scripts]
 mango-tree = "mango_tree.cli:app"
-
-dependencies = ["typer", "rich"]
