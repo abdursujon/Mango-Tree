@@ -19,7 +19,6 @@ def db_scope(fixture_name, config):
     return "session"
 
 
-
 @pytest.fixture(scope=db_scope)
 def db():
     """CardsDB object connected to a temporary database"""
@@ -28,8 +27,6 @@ def db():
         db_ = cards.CardsDB(db_path)
         yield db_
         db_.close()
-
-
 
 
 @pytest.fixture(scope="function")
@@ -50,12 +47,9 @@ def some_cards():
     ]
 
 
-
 @pytest.fixture(scope="function")
 def non_empty_db(cards_db, some_cards):
     """CardsDB object that's been populated with 'some_cards'"""
     for c in some_cards:
         cards_db.add_card(c)
     return cards_db
-
-

@@ -17,8 +17,10 @@ Example `test_slow.py`:
 ```python
 import pytest
 
+
 def test_normal():
     pass
+
 
 @pytest.mark.slow
 def test_slow():

@@ -6,6 +6,7 @@ Test Cases
 * `add` a card with a missing summary
 * `add` a duplicate card
 """
+
 import pytest
 from cards import Card, MissingSummary
 

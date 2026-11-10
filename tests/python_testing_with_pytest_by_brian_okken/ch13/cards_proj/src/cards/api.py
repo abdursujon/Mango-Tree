@@ -1,6 +1,7 @@
 """
 API for the cards project
 """
+
 from dataclasses import asdict
 from dataclasses import dataclass
 from dataclasses import field
@@ -78,13 +79,9 @@ class CardsDB:
                 if (t["owner"] == owner and t["state"] == state)
             ]
         elif owner is not None:
-            return [
-                Card.from_dict(t) for t in all if t["owner"] == owner
-            ]
+            return [Card.from_dict(t) for t in all if t["owner"] == owner]
         elif state is not None:
-            return [
-                Card.from_dict(t) for t in all if t["state"] == state
-            ]
+            return [Card.from_dict(t) for t in all if t["state"] == state]
         else:
             return [Card.from_dict(t) for t in all]
 

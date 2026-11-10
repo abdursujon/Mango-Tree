@@ -20,7 +20,6 @@ def test_finish(cards_db, start_summary, start_state):
     assert card.state == "done"
 
 
-
 @pytest.mark.parametrize("start_state", ["done", "in prog", "todo"])
 def test_finish_simple(cards_db, start_state):
     c = Card("write a book", state=start_state)
@@ -28,5 +27,3 @@ def test_finish_simple(cards_db, start_state):
     cards_db.finish(index)
     card = cards_db.get_card(index)
     assert card.state == "done"
-
-

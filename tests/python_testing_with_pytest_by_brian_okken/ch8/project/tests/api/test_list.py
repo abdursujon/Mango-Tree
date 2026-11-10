@@ -3,6 +3,7 @@ Test Cases
 * `list` from an empty database
 * `list` from a non-empty database
 """
+
 from cards import Card
 
 

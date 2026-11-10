@@ -1,18 +1,16 @@
 import pytest
 
+
 def search_item(nums, k):
     return k in nums
 
+
 @pytest.mark.parametrize(
-        "nums, k, expected", 
-        [
-            ([1, 2, 4], 1, True),
-            ([1, 3, 3, 454], 44, False),
-            ([], 4, False)
-        ]
+    "nums, k, expected",
+    [([1, 2, 4], 1, True), ([1, 3, 3, 454], 44, False), ([], 4, False)],
 )
 def test_search_item(nums, k, expected):
-    assert search_item(nums, k) == expected 
+    assert search_item(nums, k) == expected
 
 
 def test_different_assert():

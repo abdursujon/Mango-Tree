@@ -3,6 +3,7 @@ Test Cases
 * `list` from an empty database
 * `list` from a non-empty database
 """
+
 import pytest
 from cards import Card
 
@@ -74,9 +75,7 @@ def db_filled(cards_db, known_set):
     ],
     ids=str,
 )
-def test_list_filter(
-    db_filled, known_set, owner_, state_, expected_indices
-):
+def test_list_filter(db_filled, known_set, owner_, state_, expected_indices):
     result = db_filled.list_cards(owner=owner_, state=state_)
     assert len(result) == len(expected_indices)
     for i in expected_indices:

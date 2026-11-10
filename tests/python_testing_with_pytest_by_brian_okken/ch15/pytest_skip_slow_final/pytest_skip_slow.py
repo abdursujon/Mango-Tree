@@ -1,5 +1,5 @@
 """
-A pytest plugin to skip `@pytest.mark.slow` tests by default. 
+A pytest plugin to skip `@pytest.mark.slow` tests by default.
 Include the slow tests with `--slow`.
 """
 
@@ -15,9 +15,7 @@ def pytest_configure(config):
 
 
 def pytest_addoption(parser):
-    parser.addoption(
-        "--slow", action="store_true", help="include tests marked slow"
-    )
+    parser.addoption("--slow", action="store_true", help="include tests marked slow")
 
 
 def pytest_collection_modifyitems(config, items):

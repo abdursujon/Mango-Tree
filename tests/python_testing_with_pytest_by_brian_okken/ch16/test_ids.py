@@ -1,6 +1,7 @@
 import pytest
 from cards import Card
 
+
 @pytest.mark.parametrize("start_state", ["done", "in prog", "todo"])
 def test_finish(cards_db, start_state):
     c = Card("write a book", state=start_state)
@@ -31,6 +32,7 @@ card_list = [
     Card("foo", state="done"),
 ]
 
+
 @pytest.mark.parametrize("starting_card", card_list, ids=str)
 def test_id_str(cards_db, starting_card):
     ...
@@ -53,9 +55,7 @@ def test_id_func(cards_db, starting_card):
     assert card.state == "done"
 
 
-@pytest.mark.parametrize(
-    "starting_card", card_list, ids=lambda c: c.state
-)
+@pytest.mark.parametrize("starting_card", card_list, ids=lambda c: c.state)
 def test_id_lambda(cards_db, starting_card):
     ...
     index = cards_db.add_card(starting_card)
@@ -103,9 +103,7 @@ text_variants = {
 }
 
 
-@pytest.mark.parametrize(
-    "variant", text_variants.values(), ids=text_variants.keys()
-)
+@pytest.mark.parametrize("variant", text_variants.values(), ids=text_variants.keys())
 def test_summary_variants(cards_db, variant):
     i = cards_db.add_card(Card(summary=variant))
     c = cards_db.get_card(i)

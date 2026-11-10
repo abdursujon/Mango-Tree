@@ -27,6 +27,8 @@ def test_equality_with_diff_ids():
     c1 = Card("something", "brian", "todo", 123)
     c2 = Card("something", "brian", "todo", 4567)
     assert c1 == c2
+
+
 def test_inequality():
     c1 = Card("something", "brian", "todo", 123)
     c2 = Card("completely different", "okken", "done", 123)

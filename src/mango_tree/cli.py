@@ -1,13 +1,14 @@
 # typer turns python functions into terminal command
 import typer
 import mango_tree
-from typing import List 
+from typing import List
 from contextlib import contextmanager
 import os
 import pathlib
 from rich.table import Table
 from io import StringIO
-import rich 
+import rich
+
 
 def get_path():
     db_path_env = os.getenv("MANGO_TREE_DB_DIR", "")
@@ -30,6 +31,7 @@ def mango_tree_db():
 
 app = typer.Typer(add_completion=False)
 
+
 @app.command()
 def version():
     """Return version of mango_tree application"""
@@ -37,12 +39,10 @@ def version():
 
 
 @app.command()
-def add(
-    summary: List[str], owner: str = typer.Option(None, "-o", "--owner")
-):
+def add(summary: List[str], owner: str = typer.Option(None, "-o", "--owner")):
     """Add a to do to mango tree db."""
     summary = " ".join(summary) if summary else None
-    
+
     with mango_tree_db() as db:
         db.add_to_do(mango_tree.MangoTree(summary, owner, state="todo"))
 
@@ -57,6 +57,12 @@ def delete(mango_tree_id: int):
             print(f"Error: Invalid to do id {mango_tree_id}")
 
 
+@app.command()
+def delete_all():
+    """Remove all to do at once."""
+    with mango_tree_db() as db:
+        db.delete_all_to_do()
+
 
 @app.command("list")
 def list_task(
@@ -64,7 +70,7 @@ def list_task(
     state: str = typer.Option(None, "-s", "--state"),
 ):
     """
-    List all tasks 
+    List all tasks
     """
     with mango_tree_db() as db:
         the_mango_tree = db.list_all_to_do(owner=owner, state=state)
@@ -79,7 +85,6 @@ def list_task(
         out = StringIO()
         rich.print(table, file=out)
         print(out.getvalue())
-
 
 
 @app.command()

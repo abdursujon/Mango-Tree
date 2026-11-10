@@ -40,5 +40,3 @@ class TestSomething:
 
     def test_4(self):
         """Again, multiple tests are more fun."""
-
-

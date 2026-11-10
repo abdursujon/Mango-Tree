@@ -4,6 +4,7 @@ Test Cases:
 * `delete` the last card
 * `delete` a non-existent card
 """
+
 import pytest
 from cards import Card, InvalidCardId
 

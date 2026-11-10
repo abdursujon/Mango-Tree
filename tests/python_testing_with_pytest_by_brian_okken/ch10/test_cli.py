@@ -103,6 +103,7 @@ def test_env_var_path(monkeypatch):
 
 # Error Cases
 
+
 def test_delete_invalid(mock_cardsdb):
     mock_cardsdb.delete_card.side_effect = cards.api.InvalidCardId
     out = cards_cli("delete 25")

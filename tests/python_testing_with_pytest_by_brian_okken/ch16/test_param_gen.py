@@ -1,6 +1,7 @@
 import pytest
 from cards import Card
 
+
 def text_variants():
     variants = {
         "Short": "x",

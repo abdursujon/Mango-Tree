@@ -5,6 +5,7 @@ Test Cases
 * `update` owner and summary of a card at the same time
 * `update` a non-existent card
 """
+
 import pytest
 from cards import Card, InvalidCardId
 

@@ -27,7 +27,5 @@ def cards_db(session_cards_db, request, faker):
     if m and len(m.args) > 0:
         num_cards = m.args[0]
         for _ in range(num_cards):
-            db.add_card(
-                Card(summary=faker.sentence(), owner=faker.first_name())
-            )
+            db.add_card(Card(summary=faker.sentence(), owner=faker.first_name()))
     return db
