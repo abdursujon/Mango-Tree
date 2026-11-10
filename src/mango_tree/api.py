@@ -2,7 +2,6 @@
 API for the mango tree project
 """
 
-from calendar import c
 from dataclasses import asdict
 from dataclasses import dataclass
 from dataclasses import field
@@ -63,11 +62,10 @@ class MangoTreeService:
             mango_tree.owner = ""
 
         id = self._db.insert_values(mango_tree.to_dict())
-        self._db.update_by_id(id, {"id": id})
         return id
 
     def get_to_do(self, mango_tree_id: int) -> MangoTree:
-        """Return a to do with a matchign id."""
+        """Return a to do with a matching id."""
         db_item = self._db.read_by_id(mango_tree_id)
         if db_item is not None:
             return MangoTree.from_dict(db_item)
@@ -105,25 +103,21 @@ class MangoTreeService:
 
     def update_to_do(self, mango_tree_id: int, mango_tree_update: MangoTree) -> None:
         """Updates an existing to do"""
-        try:
-            self._db.update_by_id(mango_tree_id, mango_tree_update.to_dict())
-        except KeyError as err:
-            raise InvalidMangoTreeId(mango_tree_id) from err
+        if self._db.update_by_id(mango_tree_id, mango_tree_update.to_dict()) == 0:
+            raise InvalidMangoTreeId(mango_tree_id)
 
     def start(self, mango_tree_id: int):
         """Set a to do state to 'in prog'."""
         self.update_to_do(mango_tree_id, MangoTree(state="in prog"))
 
     def finish(self, mango_tree_id: int):
-        """Set a card state to 'done'."""
+        """Set a to do state to 'done'."""
         self.update_to_do(mango_tree_id, MangoTree(state="done"))
 
     def delete_to_do(self, mango_tree_id: int) -> None:
-        """Remove a card from db with given mango_tree_id."""
-        try:
-            self._db.delete_by_id(mango_tree_id)
-        except KeyError as err:
-            raise InvalidMangoTreeId(mango_tree_id) from err
+        """Remove a to do from db with given mango_tree_id."""
+        if self._db.delete_by_id(mango_tree_id) == 0:
+            raise InvalidMangoTreeId(mango_tree_id)
 
     def delete_all_to_do(self) -> None:
         self._db.delete_all()

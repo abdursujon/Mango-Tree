@@ -22,8 +22,10 @@ def get_path():
 def mango_tree_db():
     db_path = get_path()
     db = mango_tree.MangoTreeService(db_path)
-    yield db
-    db.close_db()
+    try:
+        yield db
+    finally:
+        db.close_db()
 
 
 app = typer.Typer(add_completion=False)
@@ -50,9 +52,9 @@ def delete(mango_tree_id: int):
     """Remove a to do from the database with given id."""
     with mango_tree_db() as db:
         try:
-            db.delete_by_id(mango_tree_id)
+            db.delete_to_do(mango_tree_id)
         except mango_tree.InvalidMangoTreeId:
-            print(f"Error: Invalid card id {mango_tree_id}")
+            print(f"Error: Invalid to do id {mango_tree_id}")
 
 
 
@@ -62,7 +64,7 @@ def list_task(
     state: str = typer.Option(None, "-s", "--state"),
 ):
     """
-    List all to tasks 
+    List all tasks 
     """
     with mango_tree_db() as db:
         the_mango_tree = db.list_all_to_do(owner=owner, state=state)

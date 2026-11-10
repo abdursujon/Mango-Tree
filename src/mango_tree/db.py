@@ -36,10 +36,11 @@ class MangoTreeDB:
         return cursor.lastrowid
 
     def read_by_id(self, mango_tree_id: int) -> dict | None:
-        rows = self._connection.execute(
-            "SELECT id, summary, owner, state FROM mango_tree"
-        ).fetchall()
-        return [dict(row) for row in rows]
+        row = self._connection.execute(
+            "SELECT id, summary, owner, state FROM mango_tree WHERE id = ?",
+            (mango_tree_id,),
+        ).fetchone()
+        return dict(row) if row else None
 
     def read_all(self) -> list[dict]:
         rows = self._connection.execute(
@@ -47,7 +48,7 @@ class MangoTreeDB:
         ).fetchall()
         return [dict(row) for row in rows]
 
-    def update_by_id(self, mango_tree_id: int, modified_fields: dict) -> None:
+    def update_by_id(self, mango_tree_id: int, modified_fields: dict) -> int:
         allowed_column_names = {"summary", "owner", "state"}
         fields_to_update = {
             column_name: value
@@ -56,22 +57,24 @@ class MangoTreeDB:
         }
 
         if not fields_to_update:
-            return
+            return 0
 
         set_clause = ", ".join(
             f"{column_name} = :{column_name}" for column_name in fields_to_update
         )
         with self._connection:
-            self._connection.execute(
-                f"UPDATE cards SET {set_clause} WHERE id = :id",
+            cursor = self._connection.execute(
+                f"UPDATE mango_tree SET {set_clause} WHERE id = :id",
                 {**fields_to_update, "id": mango_tree_id},
             )
+        return cursor.rowcount
 
-    def delete_by_id(self, mango_tree_id: int) -> None:
+    def delete_by_id(self, mango_tree_id: int) -> int:
         with self._connection:
-            self._connection.execute(
+            cursor = self._connection.execute(
                 "DELETE FROM mango_tree WHERE id = ?", (mango_tree_id,)
             )
+        return cursor.rowcount
 
     def delete_all(self) -> None:
         with self._connection:
