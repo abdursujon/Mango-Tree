@@ -19,7 +19,7 @@ class MangoTreeDB:
             self._connection.execute(
                 """
                 CREATE TABLE IF NOT EXISTS mango_tree(
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id INTEGER PRIMARY KEY,
                     summary TEXT,
                     owner TEXT,
                     state TEXT
@@ -74,6 +74,13 @@ class MangoTreeDB:
             cursor = self._connection.execute(
                 "DELETE FROM mango_tree WHERE id = ?", (mango_tree_id,)
             )
+            if cursor.rowcount:
+                self._connection.execute(
+                    "UPDATE mango_tree SET id = -id WHERE id > ?", (mango_tree_id,)
+                )
+                self._connection.execute(
+                    "UPDATE mango_tree SET id = -id - 1 WHERE id < 0"
+                )
         return cursor.rowcount
 
     def delete_all(self) -> None:

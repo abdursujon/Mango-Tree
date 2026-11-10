@@ -9,6 +9,7 @@ A CLI task manager for developers who live in the terminal. Add, track and finis
   - [Install](#install)
   - [Commands](#commands)
   - [Database location](#database-location)
+  - [Uninstall](#uninstall)
 - [Developer Guide](#developer-guide)
   - [Setup](#setup)
   - [Run the app](#run-the-app)
@@ -60,6 +61,18 @@ export MANGO_TREE_DB_DIR=~/Documents/tasks
 ```
 
 Add that line to `~/.bashrc` (or `~/.zshrc`) to keep it permanently.
+
+### Uninstall
+
+```bash
+pipx uninstall mango-tree
+```
+
+This removes the app but keeps your tasks. To delete them too:
+
+```bash
+rm -rf ~/mango_tree_db
+```
 
 ---
 
